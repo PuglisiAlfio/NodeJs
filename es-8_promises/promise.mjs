@@ -12,20 +12,33 @@ function luckyDraw(player) {
     });
 }
 
-Promise.allSettled([
-    luckyDraw('Joe'),
-    luckyDraw('Caroline'),
+luckyDraw('Joe')
+.then(data => {
+  console.log(data)
+  luckyDraw('Caroline')
+  .then(data => {
+    console.log(data)
     luckyDraw('Sabrina')
-])
-    .then(results => {
-        results.forEach((result) => {
-        if (result.status === "fulfilled") {
-            console.log(result.value); //value = resolve
-        } else {
-            console.log(result.reason); //reason = reject
-        }
-        });
+    .then(data => console.log(data))
     })
-    .catch(error => {
-        console.log(`Error: ${error}`);
-    });
+  })
+.catch(error => console.log(error));
+
+
+// Promise.allSettled([
+//   luckyDraw('Joe'),
+//   luckyDraw('Caroline'),
+//   luckyDraw('Sabrina')
+// ])
+//   .then(results => {
+//       results.forEach((result) => {
+//       if (result.status === "fulfilled") {
+//           console.log(result.value); //value = resolve
+//       } else {
+//           console.log(result.reason); //reason = reject
+//       }
+//       });
+//   })
+//   .catch(error => {
+//       console.log(`Error: ${error}`);
+//   });
