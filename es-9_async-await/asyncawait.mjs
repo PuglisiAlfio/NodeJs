@@ -1,6 +1,5 @@
-async function luckyDraw(player) {
-  try{
-    const myPromise = await new Promise((resolve, reject) => {
+function luckyDraw(player) {
+  return new Promise((resolve, reject) => {
       const win = Boolean(Math.round(Math.random()));
 
       process.nextTick(() => {
@@ -11,11 +10,7 @@ async function luckyDraw(player) {
         }
       });
     });
-    return myPromise;
-  } catch (error){
-    console.log(error)
   }
-}
 
 async function gameLuckyDraw() {
   try {
@@ -23,7 +18,7 @@ async function gameLuckyDraw() {
     console.log(joeResult);
     const carolineResult = await luckyDraw("Caroline");
     console.log(carolineResult);
-    const sabrinaResult = await luckyDraw("Marco");
+    const sabrinaResult = await luckyDraw("Sabrina");
     console.log(sabrinaResult);
   } catch (error) {
     console.log(error);
