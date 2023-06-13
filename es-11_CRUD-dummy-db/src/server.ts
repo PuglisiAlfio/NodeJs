@@ -1,6 +1,7 @@
 import express from "express";
 import "express-async-errors";
 import morgan from "morgan";
+import Joi from "joi";
 
 const app = express()
 const port = 3000;
@@ -26,6 +27,12 @@ type Planet = {
     },
   ];
 
+const planetSchema = Joi.object({
+  id: Joi.number().integer().required(),
+  name: Joi.string().required()
+});
+
+
 app.get('/api/planets', (req, res) => {
   res.status(200).json(planets)
 })
@@ -39,17 +46,27 @@ app.get('/api/planets/:id', (req, res) => {
 app.post('/api/planets', (req, res) => {
   const { id, name } = req.body;
   const newPlanet = { id, name }
-  planets = [...planets, newPlanet]
+  const validateNewPlanet = planetSchema.validate(newPlanet);
+  if(validateNewPlanet.error){
+    return res.status(400).json({msg: validateNewPlanet.error.details[0].message})
+  } else {
+    planets = [...planets, newPlanet]
+    res.status(201).json({msg: "Il pianeta è stato creato"})
+  }
   console.log(planets)
-  res.status(201).json({msg: "Il pianeta è stato creato"})
 })
 
 app.put('/api/planets/:id', (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id;
   const { name } = req.body;
-  planets = planets.map((planet) => planet.id === Number(id) ? {...planet, name} : planet)
+  const validateUpdatedPlanet = planetSchema.validate(id);
+  if(validateUpdatedPlanet.error){
+    return res.status(400).json({msg: validateUpdatedPlanet.error.details[0].message})
+  } else {
+    planets = planets.map((planet) => planet.id === Number(id) ? {...planet, name} : planet)
+    res.status(200).json({msg: 'Il pianeta è stato aggiornato'})
+  }
   console.log(planets)
-  res.status(200).json({msg: 'Il pianeta è stato aggiornato'})
 })
 
 app.delete('/api/planets/:id', (req, res) => {
