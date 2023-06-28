@@ -2,8 +2,10 @@ import express from "express";
 import "express-async-errors";
 import morgan from "morgan";
 import { createPlanet, deleteById, getAll, getOneById, updateById, uploadImage } from "./controllers/planets.js";
-import { logIn, signUp } from "./controllers/users.js";
+import { logIn, signUp, logOut } from "./controllers/users.js";
 import multer from "multer";
+import authorize from './controllers/authorize.js'
+import './passport.js'
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -36,6 +38,7 @@ app.post('/api/planets/:id/image', upload.single("image"), uploadImage)
 
 app.post('/api/users/login', logIn)
 app.post('/api/users/signup', signUp)
+app.get('/api/users/logout', authorize, logOut)
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`)

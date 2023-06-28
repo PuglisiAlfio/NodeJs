@@ -4,7 +4,7 @@ import passport from 'passport';
 import passportJWT from 'passport-jwt'
 import { db } from './db.js'
 
-const {SECRET} = process.env;
+const {SECRET = 'AFGHJFKCA'} = process.env;
 
 passport.use(
     new passportJWT.Strategy(
