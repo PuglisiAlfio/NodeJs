@@ -7,17 +7,17 @@ import { db } from './db.js'
 const {SECRET = 'AFGHJFKCA'} = process.env;
 
 passport.use(
-    new passportJWT.Strategy(
-        {
+    new passportJWT.Strategy({
         secretOrKey: SECRET,
         jwtFromRequest: passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken(),
-        },
-        async(payload, done) => {
-            const user = await db.one(`SELECT * FROM users WHERE id=$1`, payload.id)
-            try {
-                return user ? done(null, user) : done(new Error('user not found'))
-            } catch (error) {
-                done(error)
-            }
+    },
+    async (payload, done) => {
+        const user = await db.one(`SELECT * FROM users WHERE id=$1`, payload.id)
+
+        try{
+            return user ? done(null, user) : done(new Error("User not found."))
+        }catch(error){
+            done(error);
+        }
     })
-)
+);

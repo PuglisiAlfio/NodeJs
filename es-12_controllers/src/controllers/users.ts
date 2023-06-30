@@ -14,7 +14,7 @@ const logIn = async (req: Request, res: Response) => {
             id: user.id,
             username
         }
-        const {SECRET = 'okokokokoko'} = process.env;
+        const {SECRET = 'agashdgusjan'} = process.env;
         const token = jwt.sign(payload, SECRET)
 
         await db.none(`UPDATE users SET token=$2 WHERE id=$1`, [Number(user.id), String(token)])
