@@ -41,5 +41,5 @@ app.post('/api/users/signup', signUp);
 app.get('/api/users/logout', authorize, logOut);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}/api/planets`)
+  console.log(`Example app listening on port http://localhost:${port}`)
 });
